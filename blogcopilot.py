@@ -19,14 +19,13 @@ words = ""
 
 # Accepting text input from the user
 with st.form(key='my_form'):
-    user_input = st.text_input("Blog idea", placeholder="Describe", key='input')
     comp_url = st.text_input("Add URL", placeholder="Type or add URL of company", key='inputcompURL')
     # seo = st.text_input("SEO keywords", placeholder="Enter SEO keywords to optimize blog to", key='seoinp')
     # instruc = st.text_input("Instructions:", placeholder="Give some instructions", key='inst')
     #cta = st.text_input("CTA", placeholder="What do you want the customer to do after reading your post?", key='ctainp')
     submit_button = st.form_submit_button(label='Enter ➤')
 
-if submit_button and user_input:
+if submit_button:
     
     llm1  = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0.3, max_tokens=4096)
     comp_info = scrape_from_url([f"{comp_url}"])
@@ -371,7 +370,7 @@ if submit_button and user_input:
         
     prompt = ChatPromptTemplate.from_template(template)
     chain1 = LLMChain(llm=llm1, prompt=prompt)
-    res = chain1.invoke({"idea": user_input, "con": ques_out['text']})
+    res = chain1.invoke({"con": ques_out['text']})
     five_sim = res['text']
     st.header("Suggested blog titles:")
     st.write(five_sim)
