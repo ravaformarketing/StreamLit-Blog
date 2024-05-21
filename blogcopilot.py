@@ -275,8 +275,6 @@ if submit_button:
     
 
     Also, suggest a few, very short SEO keywords for the blog idea. 
-
-    Blog idea: {idea}
     Context: {con}
 
     \n
