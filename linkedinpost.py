@@ -35,22 +35,23 @@ if submit_button:
     
     Output format:
                                                                       
-    Introduction:
+    Company Overview:
+        - Company Name: Name of the company
+        - Brief description of the business: Provide company overview along with the nitty-gritty details of the business.  Include also what makes this company unique. If there is a mission statement or purpose of the company, include this in this overview.
+ 
+    Target Audience:
+    Provide all target customer segments along any specific personas, customer demographics and pscyographics available in this section. 
 
-        - Company name:
-        - Tagline:
-        - Brief description of the business:
 
-    Problem Statement:
-                                                                      
-        Problem the product/service solves
+    Problem Statement:                                                             
+       -  Problem the product/service solves
             1. Problem 1
             2. Problem 2
             3. Problem 3
             ...                                                         
             n. Problem n
                                                                                                                                                                                                       
-        Pain points for target audience
+       - Pain points for target audience
             1. Pain point 1
             2. Pain point 2
             3. Pain point 3
@@ -58,57 +59,21 @@ if submit_button:
             n. Pain point n
                                                                       
     Solution:
-
-        How the product/service addresses the problem:
+    Describe the product and service and how it solves the target audience's pain points. 
+       -  How the product/service addresses the problem:
             1.
             2.
             3.
             ...
             n.                                                             
 
-        Key features
+       - Key features and benefits
             1. Feature 1
             2. Feature 2
             3. Feature 3
             ...                                                         
             n. Feature n                                                                                                                                                                            
-                                                                      
-        Benefits
-            1. Benefit 1
-            2. Benefit 2
-            3. Benefit 3
-            ...                                                         
-            n. Benefit n                                                               
-
-    Target Audience:
-
-        Customer segments
-            1.
-            2.
-            3.
-            ...
-            n.   
-                                                                                                                                                                                                                                                                                                         
-        Buyer personas
-            1.
-            2.
-            3.
-            ...
-            n. 
-                                                                      
-        Customer demographics and psychographics
-            1.
-            2.
-            3.
-            ...
-            n. 
-                                                                      
-        How the product meets their needs
-            1.
-            2.
-            3.
-            ...
-            n. 
+                                                                                                                             
         """
     system_message_prompt = SystemMessagePromptTemplate.from_template(system_template)
 
