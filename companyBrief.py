@@ -3,6 +3,7 @@ from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate
 from langchain.chains import LLMChain
 from langchain.document_loaders import UnstructuredURLLoader, SeleniumURLLoader
+from langchain.chains.summarize import load_summarize_chain
 import os
 
 os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
@@ -30,6 +31,7 @@ if submit_button:
     llm1  = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0.3, max_tokens=4096)
     comp_info = scrape_from_url([f"{comp_url}"])
     comp_info = comp_info[0]
+    st.write(comp_info)
     system_template = f"""You are an expert at quickly extracting key details about a business from a large block of text and using those details to generate an in-depth, compelling business summary. 
     Write the summary STRICTLY in the following format, elaborating on each section with supporting details and explanations. 
     
@@ -41,7 +43,13 @@ if submit_button:
         - Summarize key details about the company's industry, number of employees, size, financials, offersings and major competitors if available.
 
     Target Audience:
-    Provide all target customer segments along any specific personas, customer demographics and pscyographics available in this section. 
+        -Provide all target customer segments along any specific personas, customer demographics and pscyographics available in this section. 
+        -Consumer Segments:
+            1. Consumer Segment 1
+            2. Consumer Segment  2
+            3. Consumer Segment  3
+            ...                                                         
+            n. Consumer Segment  n
 
 
     Problem Statement:                                                             
@@ -82,12 +90,18 @@ if submit_button:
             ...                                                         
             n. Benefit n         
 
-       Quick Summary:
-        - Summarize any other details available from the scrape here.                                                                                                                                                                   
-                                                                                                                             
+                                                                                                              
         """
     system_message_prompt = SystemMessagePromptTemplate.from_template(system_template)
-
+   
+    chain = load_summarize_chain(llm1, chain_type="stuff")
+    result = chain.invoke(comp_info)
+    st.write(result["output_text"])
+    
+    #   Quick Summary:
+    #    - Summarize key details about the company's industry, number of employees, size, financials, offersings and major competitors if available.
+    #   - Summarize any other details available from the scrape here if available.                                                                                                                                                                   
+               
     human_template="{question}"
     human_message_prompt = HumanMessagePromptTemplate.from_template(human_template)
     chat_prompt= ChatPromptTemplate.from_messages([system_message_prompt, human_message_prompt])
