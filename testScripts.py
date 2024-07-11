@@ -20,9 +20,8 @@ words = ""
 # Accepting text input from the user
 with st.form(key='my_form'):
     comp_url = st.text_input("Add URL", placeholder="Type or add URL of company", key='inputcompURL')
-    # seo = st.text_input("SEO keywords", placeholder="Enter SEO keywords to optimize blog to", key='seoinp')
-    # instruc = st.text_input("Instructions:", placeholder="Give some instructions", key='inst')
-    #cta = st.text_input("CTA", placeholder="What do you want the customer to do after reading your post?", key='ctainp')
+    samples = st.text_input("LinkedIn Post Samples", placeholder="Enter all post samples", key='samples')
+    
     submit_button = st.form_submit_button(label='Enter ➤')
 
 if submit_button:
@@ -39,10 +38,6 @@ if submit_button:
         - Brief description of the business: Provide company overview along with the nitty-gritty details of the business.  Include also what makes this company unique. If there is a mission statement or purpose of the company, include this in this overview.     \n
         - Summarize key details about the company's industry, number of employees, size, financials, offersings and major competitors if available.    \n
         - Industry: Detect the Industry this company falls into.     \n
-        - URL: List the URL being scraped.     \n
-        - Address: Locate the address if available.     \n
-        - LinkedIn URL: If there is a linkedin URL available, provide this here.     \n
-        - Twitter URL: If there is a twitter URL available, provide this here.     \n
 
     Target Audience:
     Provide all target customer segments along any specific personas, customer demographics and pscyographics available in this section. 
@@ -112,30 +107,16 @@ if submit_button:
    
     st.write(f"# Company info: \n\n{res_web['text']}")
    
-    template_ques = """Context: {con}\n
-    Based on the above context, answer the following questions.
-    Output format:
-    Question: Who will be primary reader of your LinkedIn posts keeping in mind that all the audience on LinkedIn are professionals? \n
-    Answer:
-    Question: What do you want to tell him or her to inspire and engage the audience? (What’s your story?)
-    \nAnswer: 
-    Question: Do you understand the key informational needs of the audience? 
-    \nAnswer: 
-    Question: What are customers pain points? 
-    \nAnswer: 
-    Question: Who are the social media influencers in the space? \n
-    Answer: 
-    Question: What are the different trends in this industry? \n
-    Answer: 
-    Question: What are the different topics, pain points that influencers are posting about in this industry? \n
-    Answer: 
+    template_ques = """Context: {con} \n
+    Based on the above context and sample data, output all the sample linkedin posts:
     """
     prompt_ques = ChatPromptTemplate.from_template(template_ques)
     chain_ques = LLMChain(llm=llm1, prompt=prompt_ques)
-    ques_out = chain_ques.invoke({"con": res_web['text']})
+    ques_out = chain_ques.invoke({"con": samples})
     st.info(ques_out["text"])
 
-    template = """Act like a social media manager and copywriter. You are skilled in copywriting, human psychology, and writing bringing as much attention as possible to your social media posts. Jot down 25 can't-resist LinkedIn hooks that appeal to the target audience. The post can be either a text post, carousel, polls, quizzes, summary or books/talks relevant to the topic or tips. Choose topics related to customer pain points, trends in the relevant industry such as things you can teach about the topic, best practices, mistakes, things audience wishes they knew.
+    template = """Act like a social media manager and copywriter. You are skilled in copy
+    writing, human psychology, and writing bringing as much attention as possible to your social media posts. Jot down 25 can't-resist LinkedIn hooks that appeal to the target audience. The post can be either a text post, carousel, polls, quizzes, summary or books/talks relevant to the topic or tips. Choose topics related to customer pain points, trends in the relevant industry such as things you can teach about the topic, best practices, mistakes, things audience wishes they knew.
 
 Each linkedin post starts with  A hook is the first line of a caption that makes people stop their scrolling on Linkedin and keep it under 20 words. It is so good and catchy, that people must feel something, a strong emotion, that makes them curious about the rest of the post. The hook is BY FAR the most important part of a post: it's 80% of the work.
 Here are great hook examples that you MUST understand, analyze, master & get inspired from the following examples:
@@ -165,25 +146,14 @@ Include emojis and hashtags
     \n
     Output format:
     1. *Titles*
-        -
-        -
-        -
-        -
-        -
-        -
-        -
-        -
-        -
+
         -
         -
 
     """
-    #st.header("Prompt")
-    
-        
     prompt = ChatPromptTemplate.from_template(template)
     chain1 = LLMChain(llm=llm1, prompt=prompt)
     res = chain1.invoke({ "con": ques_out['text']})
     five_sim = res['text']
-    st.header("Suggested LinkedIn titles:")
+    st.header("LinkedIn Posts:")
     st.write(five_sim)

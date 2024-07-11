@@ -31,7 +31,6 @@ if submit_button:
     llm1  = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0.3, max_tokens=4096)
     comp_info = scrape_from_url([f"{comp_url}"])
     comp_info = comp_info[0]
-    st.write(comp_info)
     system_template = f"""You are an expert at quickly extracting key details about a business from a large block of text and using those details to generate an in-depth, compelling business summary. 
     Write the summary STRICTLY in the following format, elaborating on each section with supporting details and explanations. 
     
@@ -88,9 +87,7 @@ if submit_button:
             2. Benefit 2
             3. Benefit 3
             ...                                                         
-            n. Benefit n         
-
-                                                                                                              
+            n. Benefit n                                                                                                                   
         """
     system_message_prompt = SystemMessagePromptTemplate.from_template(system_template)
    
@@ -98,9 +95,9 @@ if submit_button:
     result = chain.invoke(comp_info)
     st.write(result["output_text"])
     
-    #   Quick Summary:
-    #    - Summarize key details about the company's industry, number of employees, size, financials, offersings and major competitors if available.
-    #   - Summarize any other details available from the scrape here if available.                                                                                                                                                                   
+       Quick Summary:
+        - Summarize key details about the company's industry, number of employees, size, financials, offersings and major competitors if available.
+      - Summarize any other details available from the scrape here if available.                                                                                                                                                                   
                
     human_template="{question}"
     human_message_prompt = HumanMessagePromptTemplate.from_template(human_template)
